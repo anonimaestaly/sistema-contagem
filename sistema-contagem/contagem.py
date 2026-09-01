@@ -1,8 +1,9 @@
+
 import tkinter as tk
 from tkinter import messagebox
+import winsound
 
 
-# Cores da tela
 FUNDO = "#080914"
 PAINEL = "#111329"
 ROXO = "#746cff"
@@ -29,11 +30,12 @@ def iniciar():
 
     caixa_resultado.delete("1.0", tk.END)
 
-    # Mensagem que aparece antes da contagem
     caixa_resultado.insert(
         tk.END,
         ">>> CONTAGEM INICIADA <<<\n\n"
     )
+
+    status.config(text="STATUS: CONTANDO...")
 
     numero = inicio
 
@@ -43,9 +45,18 @@ def iniciar():
             str(numero) + "\n"
         )
 
+        numero_atual.config(text=str(numero))
+
+        janela.update()
+
+        winsound.MessageBeep(
+            winsound.MB_ICONASTERISK
+        )
+
+        janela.after(120)
+
         numero = numero + passo
 
-    # Mensagem que aparece depois da contagem
     caixa_resultado.insert(
         tk.END,
         "\n>>> MISSÃO CONCLUÍDA <<<"
@@ -53,61 +64,77 @@ def iniciar():
 
     status.config(text="STATUS: CONCLUÍDO")
 
+    winsound.MessageBeep(
+        winsound.MB_ICONASTERISK
+    )
+
 
 def limpar():
-    # Apaga os valores dos campos
     campo_inicio.delete(0, tk.END)
     campo_fim.delete(0, tk.END)
     campo_passo.delete(0, tk.END)
 
-    # Apaga todo o resultado
     caixa_resultado.delete("1.0", tk.END)
 
-    # Volta o status para o início
+    numero_atual.config(text="0")
     status.config(text="STATUS: PRONTO")
 
 
-# Janela
 janela = tk.Tk()
 janela.title("Sistema de Contagem")
 janela.geometry("1000x650")
 janela.configure(bg=FUNDO)
 
 
-# Título
 titulo = tk.Label(
     janela,
     text="SISTEMA DE CONTAGEM",
-    font=("Arial", 30, "bold"),
+    font=("Arial", 28, "bold"),
     fg=BRANCO,
     bg=FUNDO
 )
+
 titulo.pack(pady=30)
 
 
-# Área onde ficam os dois painéis
-area = tk.Frame(janela, bg=FUNDO)
-area.pack(fill="both", expand=True, padx=30, pady=10)
+area = tk.Frame(
+    janela,
+    bg=FUNDO
+)
+
+area.pack(
+    fill="both",
+    expand=True,
+    padx=30,
+    pady=10
+)
 
 
-# Painel esquerdo
 painel = tk.Frame(
     area,
     bg=PAINEL,
     padx=25,
     pady=20
 )
-painel.pack(side="left", fill="y", padx=(0, 15))
+
+painel.pack(
+    side="left",
+    fill="y",
+    padx=(0, 15)
+)
 
 
-# Número inicial
 tk.Label(
     painel,
     text="NÚMERO INICIAL",
     font=("Arial", 12, "bold"),
     fg=BRANCO,
     bg=PAINEL
-).pack(anchor="w", pady=(10, 5))
+).pack(
+    anchor="w",
+    pady=(10, 5)
+)
+
 
 campo_inicio = tk.Entry(
     painel,
@@ -117,18 +144,26 @@ campo_inicio = tk.Entry(
     fg=BRANCO,
     insertbackground=BRANCO
 )
-campo_inicio.pack(pady=(0, 15), ipady=8)
+
+campo_inicio.pack(
+    pady=(0, 15),
+    ipady=8
+)
+
 campo_inicio.insert(0, "1")
 
 
-# Número final
 tk.Label(
     painel,
     text="NÚMERO FINAL",
     font=("Arial", 12, "bold"),
     fg=BRANCO,
     bg=PAINEL
-).pack(anchor="w", pady=(10, 5))
+).pack(
+    anchor="w",
+    pady=(10, 5)
+)
+
 
 campo_fim = tk.Entry(
     painel,
@@ -138,18 +173,26 @@ campo_fim = tk.Entry(
     fg=BRANCO,
     insertbackground=BRANCO
 )
-campo_fim.pack(pady=(0, 15), ipady=8)
+
+campo_fim.pack(
+    pady=(0, 15),
+    ipady=8
+)
+
 campo_fim.insert(0, "20")
 
 
-# Incremento
 tk.Label(
     painel,
     text="INCREMENTO",
     font=("Arial", 12, "bold"),
     fg=BRANCO,
     bg=PAINEL
-).pack(anchor="w", pady=(10, 5))
+).pack(
+    anchor="w",
+    pady=(10, 5)
+)
+
 
 campo_passo = tk.Entry(
     painel,
@@ -159,11 +202,15 @@ campo_passo = tk.Entry(
     fg=BRANCO,
     insertbackground=BRANCO
 )
-campo_passo.pack(pady=(0, 15), ipady=8)
+
+campo_passo.pack(
+    pady=(0, 15),
+    ipady=8
+)
+
 campo_passo.insert(0, "2")
 
 
-# Botão iniciar
 tk.Button(
     painel,
     text="INICIAR CONTAGEM",
@@ -173,10 +220,13 @@ tk.Button(
     fg=BRANCO,
     relief="flat",
     cursor="hand2"
-).pack(fill="x", pady=8, ipady=10)
+).pack(
+    fill="x",
+    pady=8,
+    ipady=10
+)
 
 
-# Botão limpar
 tk.Button(
     painel,
     text="LIMPAR DADOS",
@@ -186,17 +236,49 @@ tk.Button(
     fg=BRANCO,
     relief="flat",
     cursor="hand2"
-).pack(fill="x", pady=8, ipady=10)
+).pack(
+    fill="x",
+    pady=8,
+    ipady=10
+)
 
 
-# Painel direito
 resultado = tk.Frame(
     area,
     bg=PAINEL,
     padx=20,
     pady=20
 )
-resultado.pack(side="left", fill="both", expand=True)
+
+resultado.pack(
+    side="left",
+    fill="both",
+    expand=True
+)
+
+
+tk.Label(
+    resultado,
+    text="NÚMERO ATUAL",
+    font=("Arial", 11, "bold"),
+    fg=BRANCO,
+    bg=PAINEL
+).pack(
+    pady=(0, 5)
+)
+
+
+numero_atual = tk.Label(
+    resultado,
+    text="0",
+       font=("Arial", 30, "bold"),
+    fg=VERDE,
+    bg=PAINEL
+)
+
+numero_atual.pack(
+    pady=(0, 15)
+)
 
 
 tk.Label(
@@ -205,10 +287,11 @@ tk.Label(
     font=("Arial", 18, "bold"),
     fg=BRANCO,
     bg=PAINEL
-).pack(pady=(0, 15))
+).pack(
+    pady=(0, 15)
+)
 
 
-# Caixa onde aparecem os números
 caixa_resultado = tk.Text(
     resultado,
     font=("Consolas", 14),
@@ -218,10 +301,13 @@ caixa_resultado = tk.Text(
     padx=15,
     pady=15
 )
-caixa_resultado.pack(fill="both", expand=True)
+
+caixa_resultado.pack(
+    fill="both",
+    expand=True
+)
 
 
-# Status
 status = tk.Label(
     janela,
     text="STATUS: PRONTO",
@@ -229,11 +315,16 @@ status = tk.Label(
     fg=VERDE,
     bg=FUNDO
 )
-status.pack(pady=10)
+
+status.pack(
+    pady=10
+)
 
 
-# Enter também inicia
-janela.bind("<Return>", lambda evento: iniciar())
+janela.bind(
+    "<Return>",
+    lambda evento: iniciar()
+)
 
 
 janela.mainloop()
